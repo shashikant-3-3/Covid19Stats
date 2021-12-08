@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corona Tracker</title>
+    <style>
+        body {background: url(covid.jpg);}
+        h1{ color: white; }
+        div{margin-left: 35%; margin-top: 52px;}
+        .place{width: 40%; padding: 1%;}
+        input{padding:1%; border-radius: 50px; border:solid 2px red;}
+    </style>
+</head>
+<body>
+    <h1 style="color: palevioletred; text-align: center; text-decoration: underline; text-shadow: 1px 2px black; font-size: 100px; ">Covid-19 Stats</h1>
+    
+    <div id="main">
+        <form  id="myForm">
+            <input class="place" type="text" id="country"  placeholder="Enter Country Name" required>
+            <input type="submit" value="Enter">
+        </form>
+        <h1 id="confirmed" style= "background-color: darkred; display: inline-block; padding: 15px; border-radius: 50px; color: yellow;"></h1>
+        <br>
+        <h1 id="recovered" style= "background-color: darkred; display: inline-block; padding: 15px; border-radius: 50px; color: yellow;"></h1>
+        <br>
+        <h1 id="deaths" style= "background-color: darkred; display: inline-block; padding: 15px; border-radius: 50px; color: yellow;"></h1>
+
+    </div>
+</body>
+<script>
+    var myForm = document.getElementById('myForm')
+    myForm.addEventListener('submit', function(e){
+        e.preventDefault()
+
+        var country = document.getElementById('country').value
+
+        var url = "https://api.covid19api.com/total/dayone/country/"+country
+        fetch(url)
+        .then((res) => res.json())
+        .then((res)=> {
+            var length = res.length
+            var index = length -1
+            var confirmed =  document.getElementById('confirmed')
+            var recovered =  document.getElementById('recovered')
+            var deaths =  document.getElementById('deaths')
+
+            confirmed.innerHTML = ""
+            recovered.innerHTML = ""
+            deaths.innerHTML = ""
+
+            confirmed.append("Confirmed Cases: "+ res[index].Confirmed)
+            recovered.append("Recovered Patients: " + res[index].Recovered)
+            deaths.append("Deaths: "+ res[index].Deaths)
+
+        })
+    })
+</script>
+</html>
